@@ -5,12 +5,14 @@
 #include "Texture2D.h"
 #include "SceneObject.h"
 
+class Component;
+
 namespace dae
 {
 	class GameObject : public SceneObject
 	{
 	public:
-		void Update() override;
+		void Update(float deltaTime) override;
 		void Render() const override;
 
 		void SetTexture(const std::string& filename);
@@ -24,7 +26,10 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
+		std::vector<Component*> m_ComponentArr;
 		Transform mTransform;
 		std::shared_ptr<Texture2D> mTexture;
+		
+
 	};
 }

@@ -11,7 +11,7 @@ dae::TextObject::TextObject(const std::string& text, std::shared_ptr<Font> font)
 	: mNeedsUpdate(true), mText(text), mFont(font), mTexture(nullptr)
 { }
 
-void dae::TextObject::Update()
+void dae::TextObject::Update(float)
 {
 	if (mNeedsUpdate)
 	{
