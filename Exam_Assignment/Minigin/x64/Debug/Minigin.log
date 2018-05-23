@@ -1,10 +1,6 @@
-﻿  Component.cpp
-  GameObject.cpp
-  Minigin.cpp
-  Scene.cpp
-  TransformComponent.cpp
+﻿  Minigin.cpp
+  RenderComponent.cpp
   Generating Code...
-     Creating library C:\Users\Aidan\Documents\DAE\PROG4\PacmanExam\Exam_Assignment\x64\Debug\Minigin.lib and object C:\Users\Aidan\Documents\DAE\PROG4\PacmanExam\Exam_Assignment\x64\Debug\Minigin.exp
   Minigin.vcxproj -> C:\Users\Aidan\Documents\DAE\PROG4\PacmanExam\Exam_Assignment\x64\Debug\Minigin.exe
   C:\Users\Aidan\Documents\DAE\PROG4\PacmanExam\Exam_Assignment\3rdParty\SDL2\lib\x64\SDL2.dll
   1 File(s) copied

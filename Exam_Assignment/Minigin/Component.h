@@ -7,9 +7,10 @@ public:
 	Component();
 	~Component();
 
+	void SetParent(dae::GameObject* parent) { m_parentGameObject = parent; };
 	dae::GameObject* GetParent() { return m_parentGameObject; };
-	void Update(float) { };
-	void Render() { };
+	virtual void Update(float) { };
+	virtual void Render() { };
 
 
 private:

@@ -15,8 +15,17 @@ namespace dae
 		void Update(float deltaTime) override;
 		void Render() const override;
 
+		//legacy function
 		void SetTexture(const std::string& filename);
+
+		//transform
 		void SetPosition(float x, float y);
+		glm::vec3 GetPosition() { return mTransform.GetPosition(); };
+
+
+		void AddComponent(Component* newComponent);
+		std::vector<Component*> GetComponents() { return m_ComponentArr; };
+		Component& GetComponentByType(std::string type);
 
 		GameObject() = default;
 		virtual ~GameObject();
