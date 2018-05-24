@@ -21,6 +21,8 @@ namespace dae
 		//transform
 		void SetPosition(float x, float y);
 		glm::vec3 GetPosition() { return mTransform.GetPosition(); };
+		float GetAngle() { return mTransform.GetAngle(); };
+
 
 
 		void AddComponent(Component* newComponent);
