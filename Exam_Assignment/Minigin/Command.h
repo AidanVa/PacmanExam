@@ -1,4 +1,5 @@
 #pragma once
+#include "GameObject.h"
 
 
 class Command
@@ -6,39 +7,39 @@ class Command
 public:
 	Command();
 	virtual ~Command();
-	virtual void Execute();
+	virtual void Execute(std::shared_ptr<dae::GameObject> player);
 
 
 };
 
-class JumpCommand : public Command
+class UpCommand : public Command
 {
 public:
-	void Execute() override { Jump(); }
+	void Execute(std::shared_ptr<dae::GameObject> player) override { Up(player); }
 
-	void Jump();
+	void Up(std::shared_ptr<dae::GameObject>player);
 };
 
-class FireCommand : public Command
+class DownCommand : public Command
 {
 public:
-	void Execute() override { FireGun(); }
+	void Execute(std::shared_ptr<dae::GameObject> player) override { Down(player); }
 
-	void FireGun();
+	void Down(std::shared_ptr<dae::GameObject> player);
 };
 
-class DuckCommand : public Command
+class RightCommand : public Command
 {
 public:
-	void Execute() override { Duck(); }
+	void Execute(std::shared_ptr<dae::GameObject>player) override { Right(player); }
 
-	void Duck();
+	void Right(std::shared_ptr<dae::GameObject>player);
 };
 
-class FartCommand : public Command
+class LeftCommand : public Command
 {
 public:
-	void Execute() override { Fart(); }
+	void Execute(std::shared_ptr<dae::GameObject>player) override { Left(player); }
 
-	void Fart();
+	void Left(std::shared_ptr<dae::GameObject>player);
 };

@@ -19,7 +19,7 @@ public:
 	TextComponent & operator= (const TextComponent &) = delete;
 	TextComponent & operator= (const TextComponent &&) = delete;
 
-private:
+protected:
 	bool mNeedsUpdate;
 	std::string mText;
 	std::shared_ptr<dae::Font> mFont;

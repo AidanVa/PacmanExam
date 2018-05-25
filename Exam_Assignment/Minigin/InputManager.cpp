@@ -21,6 +21,25 @@ bool dae::InputManager::ProcessInput()
 		}
 	}
 
+	//commands
+	//DOWN
+	if (GetKeyState('S') & 0x8000)
+	{
+		m_DownCommand->Execute(m_pPlayer1);
+	}
+	if (GetKeyState('W') & 0x8000)
+	{
+		m_UpCommand->Execute(m_pPlayer1);
+	}
+	if (GetKeyState('A') & 0x8000)
+	{
+		m_LeftCommand->Execute(m_pPlayer1);
+	}
+	if (GetKeyState('D') & 0x8000)
+	{
+		m_RightCommand->Execute(m_pPlayer1);
+	}
+
 	return true;
 }
 

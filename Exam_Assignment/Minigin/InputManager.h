@@ -18,7 +18,11 @@ namespace dae
 	public:
 		bool ProcessInput();
 		bool IsPressed(ControllerButton button) const;
+		void SetPlayer1(std::shared_ptr<dae::GameObject> player) { m_pPlayer1 = player; }
+
 	private:
+		std::shared_ptr<dae::GameObject> m_pPlayer1;
+		
 		XINPUT_STATE currentState{};
 
 		std::unique_ptr<Command> m_buttonA;
@@ -29,6 +33,11 @@ namespace dae
 		bool m_buttonBDown = false;
 		bool m_buttonXDown = false;
 		bool m_buttonYDown = false;
+
+		Command* m_UpCommand = new UpCommand();
+		Command* m_DownCommand = new DownCommand();
+		Command* m_LeftCommand = new LeftCommand();
+		Command* m_RightCommand = new RightCommand();
 	};
 
 }

@@ -12,28 +12,37 @@ Command::~Command()
 {
 }
 
-void Command::Execute()
+void Command::Execute(std::shared_ptr<dae::GameObject> player)
 {
+	UNREFERENCED_PARAMETER(player);
+
 }
 
-void JumpCommand::Jump()
+void UpCommand::Up(std::shared_ptr<dae::GameObject> player)
 {
-	std::cout << "You jump: \"boink\"\n";
-	//achievement
+	glm::vec3 pos = player->GetPosition();
+
+	player->SetPosition(pos.x, pos.y - 5);
 }
 
-void FireCommand::FireGun()
+void DownCommand::Down(std::shared_ptr<dae::GameObject> player)
 {
-	std::cout << "You shoot: \"pew\"\n";
+	glm::vec3 pos = player->GetPosition();
+	
+	player->SetPosition(pos.x, pos.y + 5);
 }
 
-void DuckCommand::Duck()
+void RightCommand::Right(std::shared_ptr<dae::GameObject> player)
 {
-	std::cout << "You duck: \"...\"\n";
+	glm::vec3 pos = player->GetPosition();
+
+	player->SetPosition(pos.x + 5, pos.y);
 }
 
-void FartCommand::Fart()
+void LeftCommand::Left(std::shared_ptr<dae::GameObject> player)
 {
-	std::cout << "You fart: \"toot\"\n";
+	glm::vec3 pos = player->GetPosition();
+
+	player->SetPosition(pos.x - 5, pos.y);
 }
 
