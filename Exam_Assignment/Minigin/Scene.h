@@ -13,6 +13,8 @@ namespace dae
 		void Update(float deltaTime);
 		void Render() const;
 
+		void LoadLevel(int levelIndex);
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -25,7 +27,8 @@ namespace dae
 		std::string mName{};
 		std::vector < std::shared_ptr<SceneObject>> mObjects{};
 
-		static unsigned int idCounter; 
+		static unsigned int idCounter;
+		std::vector<int> m_levelMap;
 	};
 
 }
