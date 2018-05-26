@@ -193,6 +193,7 @@ xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll $(OutputPath) /R /Y</Command
   <ItemGroup>
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSCounter.h" />

@@ -12,6 +12,9 @@ namespace dae
 	class GameObject : public SceneObject
 	{
 	public:
+
+
+
 		void Update(float deltaTime) override;
 		void Render() const override;
 
@@ -20,13 +23,14 @@ namespace dae
 
 		//transform
 		void SetPosition(float x, float y);
-		glm::vec3 GetPosition() { return mTransform.GetPosition(); };
-		float GetAngle() { return mTransform.GetAngle(); };
+		glm::vec3 GetPosition() { return mTransform.GetPosition(); }
+		void SetAngle(float angle) { mTransform.SetAngle(angle); }
+		float GetAngle() { return mTransform.GetAngle(); }
 
 
 
 		void AddComponent(Component* newComponent);
-		std::vector<Component*> GetComponents() { return m_ComponentArr; };
+		std::vector<Component*> GetComponents() { return m_ComponentArr; }
 		Component& GetComponentByType(std::string type);
 
 		GameObject() = default;

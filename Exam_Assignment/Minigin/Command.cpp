@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "Command.h"
 #include <iostream>
+#include "PlayerComponent.h"
 
 
 Command::Command()
@@ -12,37 +13,29 @@ Command::~Command()
 {
 }
 
-void Command::Execute(std::shared_ptr<dae::GameObject> player)
+void Command::Execute(PlayerComponent* player)
 {
 	UNREFERENCED_PARAMETER(player);
 
 }
 
-void UpCommand::Up(std::shared_ptr<dae::GameObject> player)
+void UpCommand::Up(PlayerComponent* player)
 {
-	glm::vec3 pos = player->GetPosition();
-
-	player->SetPosition(pos.x, pos.y - 5);
+	player->SetDirection(Direction::UP);
 }
 
-void DownCommand::Down(std::shared_ptr<dae::GameObject> player)
+void DownCommand::Down(PlayerComponent* player)
 {
-	glm::vec3 pos = player->GetPosition();
-	
-	player->SetPosition(pos.x, pos.y + 5);
+	player->SetDirection(Direction::DOWN);
 }
 
-void RightCommand::Right(std::shared_ptr<dae::GameObject> player)
+void RightCommand::Right(PlayerComponent* player)
 {
-	glm::vec3 pos = player->GetPosition();
-
-	player->SetPosition(pos.x + 5, pos.y);
+	player->SetDirection(Direction::RIGHT);
 }
 
-void LeftCommand::Left(std::shared_ptr<dae::GameObject> player)
+void LeftCommand::Left(PlayerComponent* player)
 {
-	glm::vec3 pos = player->GetPosition();
-
-	player->SetPosition(pos.x - 5, pos.y);
+	player->SetDirection(Direction::LEFT);
 }
 

@@ -43,6 +43,18 @@ bool dae::InputManager::ProcessInput()
 	return true;
 }
 
+void dae::InputManager::Destroy()
+{
+	delete m_UpCommand;
+	m_UpCommand = nullptr;
+	delete m_DownCommand;
+	m_DownCommand = nullptr;
+	delete m_RightCommand;
+	m_RightCommand = nullptr;
+	delete m_LeftCommand;
+	m_LeftCommand = nullptr;
+}
+
 bool dae::InputManager::IsPressed(ControllerButton button) const
 {
 	switch (button)

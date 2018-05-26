@@ -11,7 +11,6 @@ RenderComponent::RenderComponent()
 
 RenderComponent::~RenderComponent()
 {
-	
 }
 
 void RenderComponent::Update(float deltaTime)

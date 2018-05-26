@@ -5,7 +5,7 @@ class Component
 {
 public:
 	Component();
-	~Component();
+	virtual ~Component(void);
 
 	void SetParent(dae::GameObject* parent) { m_parentGameObject = parent; };
 	dae::GameObject* GetParent() { return m_parentGameObject; };

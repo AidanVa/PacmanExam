@@ -84,6 +84,9 @@
     <ClInclude Include="PlayerComponent.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Minigin.cpp">

@@ -2,6 +2,7 @@
 #include <XInput.h>
 #include "Singleton.h"
 #include "Command.h"
+#include "PlayerComponent.h"
 
 namespace dae
 {
@@ -17,11 +18,12 @@ namespace dae
 	{
 	public:
 		bool ProcessInput();
+		void Destroy();
 		bool IsPressed(ControllerButton button) const;
-		void SetPlayer1(std::shared_ptr<dae::GameObject> player) { m_pPlayer1 = player; }
+		void SetPlayer1(PlayerComponent* player) { m_pPlayer1 = player; }
 
 	private:
-		std::shared_ptr<dae::GameObject> m_pPlayer1;
+		PlayerComponent* m_pPlayer1;
 		
 		XINPUT_STATE currentState{};
 

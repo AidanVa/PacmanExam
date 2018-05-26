@@ -7,7 +7,16 @@
 
 namespace dae {
 	
-	GameObject::~GameObject() = default;
+	GameObject::~GameObject()
+	{
+		//delte components
+		for (Component* pComp : m_ComponentArr)
+			if (pComp != 0)
+			{
+				delete pComp;
+				pComp = 0;
+			}
+	}
 
 	void GameObject::Update(float deltaTime)
 	{
