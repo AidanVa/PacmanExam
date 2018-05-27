@@ -23,7 +23,7 @@ bool dae::InputManager::ProcessInput()
 
 	//commands
 	//GENERAL
-	if (GetKeyState(VK_SPACE) & 0x8000)
+	if (GetKeyState(VK_SPACE) & 0x8000 || IsPressed(ControllerButton::ButtonA))
 	{
 		m_StartCommand->Execute(m_pPlayer1);
 	}
@@ -38,19 +38,19 @@ bool dae::InputManager::ProcessInput()
 	//PLAYER1
 	if (m_pPlayer1 != nullptr)
 	{
-		if (GetKeyState('S') & 0x8000)
+		if (GetKeyState('S') & 0x8000 || IsPressed(ControllerButton::DpadDown))
 		{
 			m_DownCommand->Execute(m_pPlayer1);
 		}
-		if (GetKeyState('W') & 0x8000)
+		if (GetKeyState('W') & 0x8000 || IsPressed(ControllerButton::DpadUp))
 		{
 			m_UpCommand->Execute(m_pPlayer1);
 		}
-		if (GetKeyState('A') & 0x8000)
+		if (GetKeyState('A') & 0x8000 || IsPressed(ControllerButton::DpadLeft))
 		{
 			m_LeftCommand->Execute(m_pPlayer1);
 		}
-		if (GetKeyState('D') & 0x8000)
+		if (GetKeyState('D') & 0x8000 || IsPressed(ControllerButton::DpadRight))
 		{
 			m_RightCommand->Execute(m_pPlayer1);
 		}
@@ -102,14 +102,16 @@ bool dae::InputManager::IsPressed(ControllerButton button) const
 {
 	switch (button)
 	{
+	case ControllerButton::DpadUp:
+		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP;
+	case ControllerButton::DpadDown:
+		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN;
+	case ControllerButton::DpadLeft:
+		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT;
+	case ControllerButton::DpadRight:
+		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT;
 	case ControllerButton::ButtonA:
 		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
-	case ControllerButton::ButtonB:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_B;
-	case ControllerButton::ButtonX:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_X;
-	case ControllerButton::ButtonY:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_Y;
 	default: return false;
 	}
 }

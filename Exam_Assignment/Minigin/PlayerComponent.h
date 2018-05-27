@@ -16,6 +16,7 @@ public:
 	bool GhostCollision(glm::vec3 pos);
 	bool IsPoweredUp() { return m_IsPoweredUp; }
 	int GetLives() { return m_Lives; }
+	bool IsGhost() { return m_IsGhost; }
 
 private:
 	void UpdateMovement(float deltaTime);

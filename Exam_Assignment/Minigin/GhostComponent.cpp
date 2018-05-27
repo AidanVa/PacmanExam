@@ -118,12 +118,12 @@ Direction GhostComponent::CalcTargetDir()
 	glm::vec3 closestTarget = player1->GetParent()->GetPosition();
 	glm::vec3 position = GetParent()->GetPosition();
 
-	if (player2 != nullptr)
+	if (player2 != nullptr && !player2->IsGhost())
 	{
 		float p1Distance = sqrt(pow(closestTarget.x-position.x, 2) + pow(closestTarget.y-position.y, 2));
 		glm::vec3 p2Pos = player1->GetParent()->GetPosition();
 		float p2Distance = sqrt(pow(p2Pos.x - position.x, 2) + pow(p2Pos.y - position.y, 2));
-		if (p2Distance > p1Distance)
+		if (p2Distance < p1Distance)
 			closestTarget = p2Pos;
 	}
 

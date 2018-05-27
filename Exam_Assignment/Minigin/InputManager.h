@@ -8,10 +8,11 @@ namespace dae
 {
 	enum class ControllerButton
 	{
+		DpadUp,
+		DpadDown,
+		DpadLeft,
+		DpadRight,
 		ButtonA,
-		ButtonB,
-		ButtonX,
-		ButtonY
 	};
 
 	class InputManager final : public Singleton<InputManager>
@@ -33,14 +34,7 @@ namespace dae
 		
 		XINPUT_STATE currentState{};
 
-		std::unique_ptr<Command> m_buttonA;
-		std::unique_ptr<Command> m_buttonB;
-		std::unique_ptr<Command> m_buttonX;
-		std::unique_ptr<Command> m_buttonY;
-		bool m_buttonADown = false;
-		bool m_buttonBDown = false;
-		bool m_buttonXDown = false;
-		bool m_buttonYDown = false;
+
 
 		Command* m_UpCommand = new UpCommand();
 		Command* m_DownCommand = new DownCommand();
