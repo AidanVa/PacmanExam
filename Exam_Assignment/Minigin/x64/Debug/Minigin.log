@@ -1,4 +1,10 @@
-﻿  InputManager.cpp
+﻿  Command.cpp
+  GhostComponent.cpp
+  Minigin.cpp
+  PlayerComponent.cpp
+  Scene.cpp
+  SceneManager.cpp
+  Generating Code...
   Minigin.vcxproj -> C:\Users\Aidan\Documents\DAE\PROG4\PacmanExam\Exam_Assignment\x64\Debug\Minigin.exe
   C:\Users\Aidan\Documents\DAE\PROG4\PacmanExam\Exam_Assignment\3rdParty\SDL2\lib\x64\SDL2.dll
   1 File(s) copied

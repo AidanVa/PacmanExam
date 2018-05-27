@@ -70,8 +70,14 @@ namespace dae
 		int m_GridSize = 27;
 		float m_TileSize = 18;
 
+
+		int m_LevelIndex = 1;
+		int m_LevelCount = 3;
+
 		//debug
 		std::shared_ptr<GameObject> m_DebugSprite;
+
+
 	};
 
 }
