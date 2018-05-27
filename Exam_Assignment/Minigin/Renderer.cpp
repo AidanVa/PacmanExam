@@ -53,14 +53,12 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, int angle, float width, float height, float srcX, float srcY, int srcWidth, int srcHeight) const
 {
-	UNREFERENCED_PARAMETER(width);
-	UNREFERENCED_PARAMETER(height);
 
 	SDL_Rect dst;
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
-	dst.w = static_cast<int>(32);
-	dst.h = static_cast<int>(32);
+	dst.w = static_cast<int>(width);
+	dst.h = static_cast<int>(height);
 
 	SDL_Rect src;
 	src.x = static_cast<int>(srcX);

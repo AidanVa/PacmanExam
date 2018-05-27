@@ -44,3 +44,27 @@ public:
 
 	void Left(PlayerComponent*player);
 };
+
+class StartCommand : public Command
+{
+public:
+	void Execute(PlayerComponent*player) override { UNREFERENCED_PARAMETER(player); Start(); }
+
+	void Start();
+};
+
+class JoinMsPacmanCommand : public Command
+{
+public:
+	void Execute(PlayerComponent*player) override { UNREFERENCED_PARAMETER(player); JoinMsPacman(); }
+
+	void JoinMsPacman();
+};
+
+class JoinGhostCommand : public Command
+{
+public:
+	void Execute(PlayerComponent*player) override { UNREFERENCED_PARAMETER(player); JoinGhost(); }
+
+	void JoinGhost();
+};

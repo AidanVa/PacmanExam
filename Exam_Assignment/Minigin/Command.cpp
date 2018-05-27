@@ -2,6 +2,8 @@
 #include "Command.h"
 #include <iostream>
 #include "PlayerComponent.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 
 Command::Command()
@@ -37,5 +39,19 @@ void RightCommand::Right(PlayerComponent* player)
 void LeftCommand::Left(PlayerComponent* player)
 {
 	player->SetDirection(Direction::LEFT);
+}
+
+void StartCommand::Start()
+{
+	dae::SceneManager::GetInstance().GetScene()->StartLevel();
+}
+
+void JoinMsPacmanCommand::JoinMsPacman()
+{
+	dae::SceneManager::GetInstance().GetScene()->AddPlayer2(false);
+}
+
+void JoinGhostCommand::JoinGhost()
+{
 }
 

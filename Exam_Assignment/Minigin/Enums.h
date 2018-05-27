@@ -6,3 +6,11 @@ enum class Direction
 	LEFT,
 	UP,
 };
+
+enum class TileType
+{
+	EMPTY,
+	PICKUP,
+	POWERUP,
+	DOUBLE_PICKUP,
+};

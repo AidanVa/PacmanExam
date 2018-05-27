@@ -21,9 +21,14 @@ namespace dae
 		void Destroy();
 		bool IsPressed(ControllerButton button) const;
 		void SetPlayer1(PlayerComponent* player) { m_pPlayer1 = player; }
+		void SetPlayer2(PlayerComponent* player) { m_pPlayer2 = player; }
+		PlayerComponent* GetPlayer2() { return m_pPlayer2; };
+
 
 	private:
 		PlayerComponent* m_pPlayer1;
+		PlayerComponent* m_pPlayer2;
+
 		
 		XINPUT_STATE currentState{};
 
@@ -40,6 +45,13 @@ namespace dae
 		Command* m_DownCommand = new DownCommand();
 		Command* m_LeftCommand = new LeftCommand();
 		Command* m_RightCommand = new RightCommand();
+
+		Command* m_StartCommand = new StartCommand();
+		Command* m_JoinMsPacmanCommand = new JoinMsPacmanCommand();
+		Command* m_JoinGhostCommand = new JoinGhostCommand();
+
+
+
 	};
 
 }

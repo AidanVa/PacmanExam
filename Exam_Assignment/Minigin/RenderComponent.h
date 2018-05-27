@@ -26,10 +26,10 @@ public:
 
 private:
 	std::shared_ptr<dae::Texture2D> mTexture;
-	float m_Width = 30;
-	float m_Height = 30;
+	float m_Width = 18;
+	float m_Height = 18;
 
-	float m_frameDuration = 0.1f;
+	float m_frameDuration = 0.075f;
 	int m_FrameIndex = 0;
 	int m_FrameCount = 1;
 	float m_FrameTimer = 0;

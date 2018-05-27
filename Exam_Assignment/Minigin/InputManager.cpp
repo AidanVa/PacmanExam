@@ -22,22 +22,54 @@ bool dae::InputManager::ProcessInput()
 	}
 
 	//commands
-	//DOWN
-	if (GetKeyState('S') & 0x8000)
+	//GENERAL
+	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
-		m_DownCommand->Execute(m_pPlayer1);
+		m_StartCommand->Execute(m_pPlayer1);
 	}
-	if (GetKeyState('W') & 0x8000)
+	if (GetKeyState('M') & 0x8000)
 	{
-		m_UpCommand->Execute(m_pPlayer1);
+		m_JoinMsPacmanCommand->Execute(m_pPlayer1);
 	}
-	if (GetKeyState('A') & 0x8000)
+	//PLAYER1
+	if (m_pPlayer1 != nullptr)
 	{
-		m_LeftCommand->Execute(m_pPlayer1);
+		if (GetKeyState('S') & 0x8000)
+		{
+			m_DownCommand->Execute(m_pPlayer1);
+		}
+		if (GetKeyState('W') & 0x8000)
+		{
+			m_UpCommand->Execute(m_pPlayer1);
+		}
+		if (GetKeyState('A') & 0x8000)
+		{
+			m_LeftCommand->Execute(m_pPlayer1);
+		}
+		if (GetKeyState('D') & 0x8000)
+		{
+			m_RightCommand->Execute(m_pPlayer1);
+		}
 	}
-	if (GetKeyState('D') & 0x8000)
+	//PLAYER2
+	if (m_pPlayer2 != nullptr)
 	{
-		m_RightCommand->Execute(m_pPlayer1);
+		if (GetKeyState(VK_DOWN) & 0x8000)
+		{
+			m_DownCommand->Execute(m_pPlayer2);
+		}
+		if (GetKeyState(VK_UP) & 0x8000)
+		{
+			m_UpCommand->Execute(m_pPlayer2);
+		}
+		if (GetKeyState(VK_LEFT) & 0x8000)
+		{
+			m_LeftCommand->Execute(m_pPlayer2);
+		}
+		if (GetKeyState(VK_RIGHT) & 0x8000)
+		{
+			m_RightCommand->Execute(m_pPlayer2);
+		}
 	}
 
 	return true;
@@ -53,6 +85,13 @@ void dae::InputManager::Destroy()
 	m_RightCommand = nullptr;
 	delete m_LeftCommand;
 	m_LeftCommand = nullptr;
+
+	delete m_StartCommand;
+	m_StartCommand = nullptr;
+	delete m_JoinMsPacmanCommand;
+	m_JoinMsPacmanCommand = nullptr;
+	delete m_JoinGhostCommand;
+	m_JoinGhostCommand = nullptr;
 }
 
 bool dae::InputManager::IsPressed(ControllerButton button) const
