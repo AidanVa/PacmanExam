@@ -22,6 +22,7 @@ namespace dae
 		bool IsPressed(ControllerButton button) const;
 		void SetPlayer1(PlayerComponent* player) { m_pPlayer1 = player; }
 		void SetPlayer2(PlayerComponent* player) { m_pPlayer2 = player; }
+		PlayerComponent* GetPlayer1() { return m_pPlayer1; };
 		PlayerComponent* GetPlayer2() { return m_pPlayer2; };
 
 

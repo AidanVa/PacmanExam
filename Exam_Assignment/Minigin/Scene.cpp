@@ -10,6 +10,7 @@
 #include "TextComponent.h"
 #include "InputManager.h"
 #include "FPSCounter.h"
+#include "GhostComponent.h"
 
 unsigned int dae::Scene::idCounter = 0;
 
@@ -25,6 +26,11 @@ dae::Scene::Scene(const std::string& name) : mName(name)
 
 int dae::Scene::GetTileAtPos(glm::vec3 position)
 {
+	//crash prevention
+	if (m_levelMap.size()==0)
+	{
+		return 0;
+	}
 	//m_DebugSprite->SetPosition(position.x,position.y);
 	position.x = position.x - 640 / 2 + m_GridSize * m_TileSize / 2 - m_TileSize / 2;
 	int xIndex = int(position.x / m_TileSize);
@@ -105,11 +111,58 @@ void dae::Scene::SpawnPlayer(int playerType)
 	}
 }
 
+void dae::Scene::SpawnGhost(int ghostNr, float x, float y)
+{
+	UNREFERENCED_PARAMETER(ghostNr);
+	UNREFERENCED_PARAMETER(x);
+	UNREFERENCED_PARAMETER(y);
+
+	auto ghost = std::make_shared<dae::GameObject>();
+	ghost->SetPosition(x,y);
+	RenderComponent* renderComponent = new RenderComponent();
+	switch (ghostNr)
+	{
+	case 1:
+		renderComponent->SetTexture("ghostBlue.png", 2, 32, 36);
+		break;
+	case 2:
+		renderComponent->SetTexture("ghostPink.png", 2, 32, 36);
+		break;
+	case 3:
+		renderComponent->SetTexture("ghostOrange.png", 2, 32, 36);
+		break;
+	default:
+		renderComponent->SetTexture("ghostRed.png", 2, 32, 36);
+		break;
+	}
+	ghost->AddComponent(renderComponent);
+	GhostComponent * ghostComp = new GhostComponent();
+	ghost->AddComponent(ghostComp);
+	Add(ghost);
+}
+
+void dae::Scene::SpawnAllGhosts()
+{
+	SpawnGhost(1, 300, 220);
+	SpawnGhost(2, 300, 240);
+	SpawnGhost(3, 340, 220);
+	SpawnGhost(4, 340, 240);
+
+
+}
+
 dae::Scene::~Scene() = default;
 
 void dae::Scene::Add(const std::shared_ptr<SceneObject>& object)
 {
 	mObjects.push_back(object);
+}
+
+void dae::Scene::DeleteObject(const std::shared_ptr<SceneObject>& object)
+{
+	for (size_t j = 0; j < mObjects.size(); j++)
+		if (object.get() == mObjects[j].get())
+			mObjects.erase(mObjects.begin() + j);
 }
 
 void dae::Scene::Update(float deltaTime)
@@ -122,10 +175,12 @@ void dae::Scene::Update(float deltaTime)
 
 	//check game completion
 	if (m_IsGameRunning && m_pickupsArr.size() == 0)
-	{
-		m_IsGameRunning = false;
 		EndLevel(true);
-	}
+	
+	if( (InputManager::GetInstance().GetPlayer1()!=nullptr && InputManager::GetInstance().GetPlayer1()->GetLives()<=0 )
+		|| (InputManager::GetInstance().GetPlayer2() != nullptr && InputManager::GetInstance().GetPlayer2()->GetLives() <= 0))
+		EndLevel(false);
+
 
 
 }
@@ -151,30 +206,30 @@ void dae::Scene::LoadLevel(int levelIndex)
 		m_levelMap =
 		{ 
 			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,1,1,1,0,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,1,1,1,0,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-			1,2,2,2,2,2,2,2,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
+			1,4,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,1,
+			1,2,1,1,2,1,2,2,2,1,2,1,2,1,2,1,1,2,1,1,1,2,1,1,1,2,1,
+			1,2,1,1,2,1,1,1,1,1,2,1,2,1,2,1,1,2,1,1,1,2,2,2,1,2,1,
+			1,2,2,2,2,2,2,2,2,2,2,1,2,2,2,1,2,2,1,2,2,2,1,2,1,2,1,
+			1,2,1,1,2,1,1,2,1,1,2,1,1,1,2,2,2,2,2,2,2,2,1,2,1,2,1,
+			1,2,1,2,2,2,2,2,2,2,2,2,2,1,2,1,1,1,1,1,2,2,1,2,2,2,1,
+			1,2,1,2,1,1,1,1,2,1,1,1,2,1,2,1,1,1,1,1,2,1,1,1,1,2,1,
+			1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
+			1,2,1,2,1,1,1,1,2,1,1,1,2,1,2,1,1,1,1,1,2,1,1,1,1,2,1,
+			1,2,1,2,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,1,
+			1,2,1,2,2,2,2,2,2,2,2,1,1,0,1,1,2,1,2,1,2,1,1,2,1,2,1,
+			1,2,2,2,1,2,2,2,2,1,2,1,0,0,0,1,2,2,2,1,2,2,1,2,1,2,1,
+			1,2,1,2,2,2,1,1,1,1,2,1,0,0,0,1,2,1,1,1,1,2,1,2,1,2,1,
+			1,2,1,2,1,2,1,2,2,2,2,1,1,0,1,1,2,2,2,1,2,2,2,2,2,2,1,
+			1,2,1,2,2,2,1,2,1,2,2,2,2,2,2,2,2,1,2,1,2,1,1,1,1,2,1,
+			1,2,1,1,1,2,1,2,1,2,2,2,1,1,1,1,2,1,2,2,2,2,2,2,2,2,1,
+			1,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,2,1,2,1,1,1,1,1,2,1,1,
+			1,2,1,2,2,2,1,2,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,2,1,1,
+			1,2,1,1,1,2,1,2,1,1,1,2,1,1,2,1,2,1,2,1,2,1,2,1,2,1,1,
+			1,2,2,2,2,2,1,2,2,2,2,2,1,1,2,1,2,1,2,1,2,1,2,1,2,2,1,
+			1,2,1,1,1,2,1,2,1,1,1,2,1,1,1,1,2,1,2,1,2,1,2,1,1,2,1,
+			1,2,1,2,2,2,2,2,1,2,1,2,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1,
+			1,2,1,2,1,1,1,2,1,2,1,2,1,2,1,1,2,1,1,1,2,1,1,1,1,2,1,
+			1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
 			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 		};
 		break;
@@ -209,6 +264,10 @@ void dae::Scene::LoadLevel(int levelIndex)
 				render->SetTexture("point.png");
 				m_pickupsArr.push_back(object);
 				break;
+			case 4:
+				render->SetTexture("cherry.png");
+				m_SpecialPickupsArr.push_back(object);
+				break;
 			default:
 				break;
 			}
@@ -219,6 +278,8 @@ void dae::Scene::LoadLevel(int levelIndex)
 	}
 	//LOAD PLAYER
 	SpawnPlayer(1);
+	//SPAWN GHOSTS
+	SpawnAllGhosts();
 
 	//FPS METER
 	auto fpsMeter = std::make_shared<dae::GameObject>();
@@ -231,6 +292,7 @@ void dae::Scene::LoadLevel(int levelIndex)
 
 void dae::Scene::EndLevel(bool win)
 {
+	m_IsGameRunning = false;
 	ClearLevel();
 
 	auto scoreObject = std::make_shared<dae::GameObject>();
@@ -359,6 +421,7 @@ bool dae::Scene::CheckCollision(glm::vec3 position, Direction direction)
 
 TileType dae::Scene::CheckPickups(glm::vec3 position)
 {
+	//regular pickups
 	for (size_t i = 0; i < m_pickupsArr.size(); i++)
 		if (abs(position.x - m_pickupsArr[i]->GetPosition().x) < m_TileSize/2 && abs(position.y - m_pickupsArr[i]->GetPosition().y) < m_TileSize/2)
 			for (size_t j = 0; j < mObjects.size(); j++)
@@ -368,7 +431,26 @@ TileType dae::Scene::CheckPickups(glm::vec3 position)
 					mObjects.erase(mObjects.begin() + j);
 					return TileType::PICKUP;
 				}
-			
+	//special pickups
+	for (size_t i = 0; i < m_SpecialPickupsArr.size(); i++)
+		if (abs(position.x - m_SpecialPickupsArr[i]->GetPosition().x) < m_TileSize / 2 && abs(position.y - m_SpecialPickupsArr[i]->GetPosition().y) < m_TileSize / 2)
+			for (size_t j = 0; j < mObjects.size(); j++)
+				if (m_SpecialPickupsArr[i].get() == mObjects[j].get())
+				{
+					m_SpecialPickupsArr.erase(m_SpecialPickupsArr.begin() + i);
+					mObjects.erase(mObjects.begin() + j);
+					return TileType::DOUBLE_PICKUP;
+				}
+	//powerups
+	for (size_t i = 0; i < m_PowerupsArr.size(); i++)
+		if (abs(position.x - m_PowerupsArr[i]->GetPosition().x) < m_TileSize / 2 && abs(position.y - m_PowerupsArr[i]->GetPosition().y) < m_TileSize / 2)
+			for (size_t j = 0; j < mObjects.size(); j++)
+				if (m_PowerupsArr[i].get() == mObjects[j].get())
+				{
+					m_PowerupsArr.erase(m_PowerupsArr.begin() + i);
+					mObjects.erase(mObjects.begin() + j);
+					return TileType::POWERUP;
+				}
 
 	return TileType::EMPTY;
 }

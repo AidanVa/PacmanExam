@@ -19,6 +19,8 @@ namespace dae
 	public:
 		void Add(const std::shared_ptr<SceneObject>& object);
 
+		void DeleteObject(const std::shared_ptr<SceneObject>& object);
+
 		void Update(float deltaTime);
 		void Render() const;
 
@@ -44,7 +46,8 @@ namespace dae
 		int GetTileAtPos(glm::vec3 position);
 		void ClearLevel();
 		void SpawnPlayer(int playerType);
-		void SpawnGhost();
+		void SpawnGhost(int ghostNr, float x, float y);
+		void SpawnAllGhosts();
 
 		std::string mName{};
 		std::vector < std::shared_ptr<SceneObject>> mObjects{};
@@ -56,6 +59,10 @@ namespace dae
 
 		std::vector<int> m_levelMap;
 		std::vector < std::shared_ptr<GameObject>>  m_pickupsArr;
+		std::vector < std::shared_ptr<GameObject>>  m_SpecialPickupsArr;
+		std::vector < std::shared_ptr<GameObject>>  m_PowerupsArr;
+
+
 		int m_GridSize = 27;
 		float m_TileSize = 18;
 
