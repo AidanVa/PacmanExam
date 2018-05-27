@@ -76,7 +76,7 @@ void GhostComponent::UpdateMovement(float deltaTime)
 	if (scene->CheckCollision(GetParent()->GetPosition(), m_Direction))
 	{
 		m_Direction = static_cast<Direction>(rand() % 4);
-		m_TargetDirection = static_cast<Direction>(rand() % 4);
+		m_TargetDirection = CalcTargetDir();
 	}
 
 	//move
@@ -108,4 +108,47 @@ void GhostComponent::Respawn()
 {
 	GetParent()->SetPosition(m_StartPosition.x, m_StartPosition.y);
 	m_RespawnTimer = 3;
+}
+
+Direction GhostComponent::CalcTargetDir()
+{
+	PlayerComponent* player1 = dae::InputManager::GetInstance().GetPlayer1();
+	PlayerComponent* player2 = dae::InputManager::GetInstance().GetPlayer2();
+	//calculate closest target
+	glm::vec3 closestTarget = player1->GetParent()->GetPosition();
+	glm::vec3 position = GetParent()->GetPosition();
+
+	if (player2 != nullptr)
+	{
+		float p1Distance = sqrt(pow(closestTarget.x-position.x, 2) + pow(closestTarget.y-position.y, 2));
+		glm::vec3 p2Pos = player1->GetParent()->GetPosition();
+		float p2Distance = sqrt(pow(p2Pos.x - position.x, 2) + pow(p2Pos.y - position.y, 2));
+		if (p2Distance > p1Distance)
+			closestTarget = p2Pos;
+	}
+
+	//calculate direction
+	float horizontalWeight = closestTarget.x - position.x;
+	float verticalWeight = closestTarget.y - position.y;
+	if (m_Scared)
+	{
+		horizontalWeight *= -1;
+		verticalWeight *= -1;
+	}
+
+	if (abs(horizontalWeight) > abs(verticalWeight))
+		if (horizontalWeight > 0)
+			return Direction::RIGHT;
+		else
+			return Direction::LEFT;
+	else
+		if (verticalWeight > 0)
+			return Direction::DOWN;
+		else
+			return Direction::UP;
+
+
+		
+
+
 }

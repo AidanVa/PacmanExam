@@ -13,9 +13,12 @@ public:
 	void Update(float deltaTime);
 
 
+
 private:
 	void UpdateMovement(float deltaTime);
 	void Respawn();
+
+	Direction CalcTargetDir();
 
 	Direction m_Direction = Direction::RIGHT;
 	Direction m_TargetDirection = Direction::RIGHT;
