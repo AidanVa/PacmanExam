@@ -49,6 +49,7 @@ namespace dae
 		void SpawnGhost(int ghostNr, float x, float y);
 		void SpawnAllGhosts();
 
+
 		std::string mName{};
 		std::vector < std::shared_ptr<SceneObject>> mObjects{};
 
@@ -61,6 +62,9 @@ namespace dae
 		std::vector < std::shared_ptr<GameObject>>  m_pickupsArr;
 		std::vector < std::shared_ptr<GameObject>>  m_SpecialPickupsArr;
 		std::vector < std::shared_ptr<GameObject>>  m_PowerupsArr;
+
+		std::vector < std::shared_ptr<GameObject>>  m_Ghosts;
+
 
 
 		int m_GridSize = 27;

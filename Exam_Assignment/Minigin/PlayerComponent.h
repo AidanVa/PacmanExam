@@ -14,6 +14,7 @@ public:
 	void SetDirection(Direction direction);
 
 	bool GhostCollision(glm::vec3 pos);
+	bool IsPoweredUp() { return m_IsPoweredUp; }
 	int GetLives() { return m_Lives; }
 
 private:
@@ -28,6 +29,8 @@ private:
 	TextComponent* m_ScoreText = nullptr;
 	bool m_IsGhost = false;
 	bool m_IsPoweredUp = false;
+	float m_PowerupTimer = 0;
+
 	glm::vec3 m_StartPosition = glm::vec3(-50, -50, -50);
 	int m_Lives = 3;
 	std::vector < std::shared_ptr<dae::GameObject>>  m_LivesArr;

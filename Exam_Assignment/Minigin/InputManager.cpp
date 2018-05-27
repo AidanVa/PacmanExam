@@ -31,6 +31,10 @@ bool dae::InputManager::ProcessInput()
 	{
 		m_JoinMsPacmanCommand->Execute(m_pPlayer1);
 	}
+	if (GetKeyState('G') & 0x8000)
+	{
+		m_JoinGhostCommand->Execute(m_pPlayer1);
+	}
 	//PLAYER1
 	if (m_pPlayer1 != nullptr)
 	{

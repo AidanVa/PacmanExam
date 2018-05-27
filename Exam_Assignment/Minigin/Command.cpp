@@ -53,5 +53,6 @@ void JoinMsPacmanCommand::JoinMsPacman()
 
 void JoinGhostCommand::JoinGhost()
 {
+	dae::SceneManager::GetInstance().GetScene()->AddPlayer2(true);
 }
 

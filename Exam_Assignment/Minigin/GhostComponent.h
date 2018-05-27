@@ -1,12 +1,13 @@
 #pragma once
 #include "Component.h"
 #include "Enums.h"
+#include "RenderComponent.h"
 
 class GhostComponent :
 	public Component
 {
 public:
-	GhostComponent();
+	GhostComponent(RenderComponent* renderComp, std::string texturePath);
 	~GhostComponent();
 
 	void Update(float deltaTime);
@@ -23,5 +24,9 @@ private:
 	float m_RespawnTimer = 3;
 
 	bool m_Scared = false;
+	bool m_TextureScared = false;
+	std::string m_TexturePath;
+	RenderComponent * m_RenderComp = nullptr;
+	
 };
 

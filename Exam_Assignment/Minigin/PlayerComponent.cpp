@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "Enums.h"
 #include "RenderComponent.h"
+#include "InputManager.h"
 
 
 PlayerComponent::PlayerComponent(bool isGhost, int playerNr) :m_IsGhost(isGhost)
@@ -42,7 +43,17 @@ PlayerComponent::~PlayerComponent()
 
 void PlayerComponent::Update(float deltaTime)
 {
-	if (m_RespawnTimer>0)
+	//timers
+	if (m_IsPoweredUp)
+	{
+		m_PowerupTimer += deltaTime;
+		if (m_PowerupTimer > 10)
+		{
+			m_PowerupTimer = 0;
+			m_IsPoweredUp = false;
+		}
+	}
+	if (m_RespawnTimer > 0)
 	{
 		m_RespawnTimer -= deltaTime;
 		return;
@@ -59,22 +70,41 @@ void PlayerComponent::Update(float deltaTime)
 		if (!scene->CheckCollision(GetParent()->GetPosition(), m_TargetDirection))
 		{
 			m_Direction = m_TargetDirection;
-			GetParent()->SetAngle(float(m_Direction) * 90);
+			if (!m_IsGhost)
+				GetParent()->SetAngle(float(m_Direction) * 90);
 		}
 
-	//check pickups
-	TileType tile = scene->CheckPickups(GetParent()->GetPosition());
-	if (tile == TileType::PICKUP)
+	//non-ghost specific updates
+	if (!m_IsGhost)
 	{
-		m_Score++;
-		m_ScoreText->SetText(std::to_string(m_Score));
+		//check pickups
+		TileType tile = scene->CheckPickups(GetParent()->GetPosition());
+		if (tile == TileType::PICKUP)
+		{
+			m_Score++;
+			m_ScoreText->SetText(std::to_string(m_Score));
+		}
+		else if (tile == TileType::DOUBLE_PICKUP)
+		{
+			m_Score += 10;
+			m_ScoreText->SetText(std::to_string(m_Score));
+		}
+		else if (tile == TileType::POWERUP)
+		{
+			m_IsPoweredUp = true;
+			m_PowerupTimer = 0;
+		}
 	}
-	else if (tile == TileType::DOUBLE_PICKUP)
+	//player 2 ghost-specific updates
+	else
 	{
-		m_Score += 10;
-		m_ScoreText->SetText(std::to_string(m_Score));
+		if (m_RespawnTimer <= 0)
+		{
+			PlayerComponent* player1 = dae::InputManager::GetInstance().GetPlayer1();
+			if (player1 != nullptr && player1->GhostCollision(GetParent()->GetPosition()))
+				Respawn();
+		}
 	}
-
 }
 void PlayerComponent::SetDirection(Direction direction)
 {
@@ -93,6 +123,7 @@ bool PlayerComponent::GhostCollision(glm::vec3 pos)
 		if (m_IsPoweredUp)
 		{
 			m_Score += 25;
+			m_ScoreText->SetText(std::to_string(m_Score));
 			return true;
 		}
 		else

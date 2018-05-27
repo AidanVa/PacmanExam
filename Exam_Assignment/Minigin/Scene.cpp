@@ -85,9 +85,9 @@ void dae::Scene::SpawnPlayer(int playerType)
 	}
 	else if (playerType == 2)
 	{
-		//pacman
+		//ms pacman
 		auto pacman = std::make_shared<dae::GameObject>();
-		pacman->SetPosition(360, 80);
+		pacman->SetPosition(460, 80);
 		RenderComponent* renderComponent = new RenderComponent();
 		renderComponent->SetTexture("msPacman.png", 6, 46, 45);
 		pacman->AddComponent(renderComponent);
@@ -96,15 +96,15 @@ void dae::Scene::SpawnPlayer(int playerType)
 		Add(pacman);
 		dae::InputManager::GetInstance().SetPlayer2(playerComp);
 	}
-	else if (playerType == 2)
+	else if (playerType == 3)
 	{
-		//pacman
+		//ghost
 		auto pacman = std::make_shared<dae::GameObject>();
-		pacman->SetPosition(360, 80);
+		pacman->SetPosition(460, 80);
 		RenderComponent* renderComponent = new RenderComponent();
-		renderComponent->SetTexture("msPacman.png", 6, 46, 45);
+		renderComponent->SetTexture("ghostPlayer.png", 2, 32, 36);
 		pacman->AddComponent(renderComponent);
-		PlayerComponent * playerComp = new PlayerComponent(false, 2);
+		PlayerComponent * playerComp = new PlayerComponent(true, 2);
 		pacman->AddComponent(playerComp);
 		Add(pacman);
 		dae::InputManager::GetInstance().SetPlayer2(playerComp);
@@ -113,30 +113,28 @@ void dae::Scene::SpawnPlayer(int playerType)
 
 void dae::Scene::SpawnGhost(int ghostNr, float x, float y)
 {
-	UNREFERENCED_PARAMETER(ghostNr);
-	UNREFERENCED_PARAMETER(x);
-	UNREFERENCED_PARAMETER(y);
-
 	auto ghost = std::make_shared<dae::GameObject>();
 	ghost->SetPosition(x,y);
 	RenderComponent* renderComponent = new RenderComponent();
+	std::string path;
 	switch (ghostNr)
 	{
 	case 1:
-		renderComponent->SetTexture("ghostBlue.png", 2, 32, 36);
+		path = "ghostBlue.png";
 		break;
 	case 2:
-		renderComponent->SetTexture("ghostPink.png", 2, 32, 36);
+		path = "ghostPink.png";
 		break;
 	case 3:
-		renderComponent->SetTexture("ghostOrange.png", 2, 32, 36);
+		path = "ghostOrange.png";
 		break;
 	default:
-		renderComponent->SetTexture("ghostRed.png", 2, 32, 36);
+		path = "ghostRed.png";
 		break;
 	}
+	renderComponent->SetTexture(path, 2, 32, 36);
 	ghost->AddComponent(renderComponent);
-	GhostComponent * ghostComp = new GhostComponent();
+	GhostComponent * ghostComp = new GhostComponent(renderComponent, path);
 	ghost->AddComponent(ghostComp);
 	Add(ghost);
 }
@@ -206,30 +204,30 @@ void dae::Scene::LoadLevel(int levelIndex)
 		m_levelMap =
 		{ 
 			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-			1,4,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,1,
+			1,3,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,3,1,
 			1,2,1,1,2,1,2,2,2,1,2,1,2,1,2,1,1,2,1,1,1,2,1,1,1,2,1,
-			1,2,1,1,2,1,1,1,1,1,2,1,2,1,2,1,1,2,1,1,1,2,2,2,1,2,1,
-			1,2,2,2,2,2,2,2,2,2,2,1,2,2,2,1,2,2,1,2,2,2,1,2,1,2,1,
+			1,2,1,1,2,1,1,1,1,1,2,1,2,1,2,1,1,2,1,1,1,2,4,2,1,2,1,
+			1,2,2,2,2,2,2,2,2,2,2,1,3,2,2,1,2,2,1,2,2,2,1,2,1,2,1,
 			1,2,1,1,2,1,1,2,1,1,2,1,1,1,2,2,2,2,2,2,2,2,1,2,1,2,1,
 			1,2,1,2,2,2,2,2,2,2,2,2,2,1,2,1,1,1,1,1,2,2,1,2,2,2,1,
 			1,2,1,2,1,1,1,1,2,1,1,1,2,1,2,1,1,1,1,1,2,1,1,1,1,2,1,
 			1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
 			1,2,1,2,1,1,1,1,2,1,1,1,2,1,2,1,1,1,1,1,2,1,1,1,1,2,1,
 			1,2,1,2,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,2,1,
-			1,2,1,2,2,2,2,2,2,2,2,1,1,0,1,1,2,1,2,1,2,1,1,2,1,2,1,
+			1,2,1,2,2,2,4,2,2,2,2,1,1,0,1,1,2,1,2,1,2,1,1,2,1,2,1,
 			1,2,2,2,1,2,2,2,2,1,2,1,0,0,0,1,2,2,2,1,2,2,1,2,1,2,1,
-			1,2,1,2,2,2,1,1,1,1,2,1,0,0,0,1,2,1,1,1,1,2,1,2,1,2,1,
+			1,2,1,2,2,3,1,1,1,1,2,1,0,0,0,1,2,1,1,1,1,2,1,3,1,2,1,
 			1,2,1,2,1,2,1,2,2,2,2,1,1,0,1,1,2,2,2,1,2,2,2,2,2,2,1,
 			1,2,1,2,2,2,1,2,1,2,2,2,2,2,2,2,2,1,2,1,2,1,1,1,1,2,1,
 			1,2,1,1,1,2,1,2,1,2,2,2,1,1,1,1,2,1,2,2,2,2,2,2,2,2,1,
 			1,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,2,1,2,1,1,1,1,1,2,1,1,
-			1,2,1,2,2,2,1,2,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,2,1,1,
+			1,2,1,2,2,2,1,2,1,1,1,2,2,2,2,2,2,2,2,2,2,4,2,1,2,1,1,
 			1,2,1,1,1,2,1,2,1,1,1,2,1,1,2,1,2,1,2,1,2,1,2,1,2,1,1,
 			1,2,2,2,2,2,1,2,2,2,2,2,1,1,2,1,2,1,2,1,2,1,2,1,2,2,1,
-			1,2,1,1,1,2,1,2,1,1,1,2,1,1,1,1,2,1,2,1,2,1,2,1,1,2,1,
-			1,2,1,2,2,2,2,2,1,2,1,2,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1,
+			1,2,1,1,1,2,1,2,1,1,1,2,1,1,1,1,2,1,3,1,2,1,2,1,1,2,1,
+			1,2,1,2,2,2,2,2,1,4,1,2,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1,
 			1,2,1,2,1,1,1,2,1,2,1,2,1,2,1,1,2,1,1,1,2,1,1,1,1,2,1,
-			1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
+			1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,1,
 			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 		};
 		break;
@@ -263,6 +261,10 @@ void dae::Scene::LoadLevel(int levelIndex)
 			case 2:
 				render->SetTexture("point.png");
 				m_pickupsArr.push_back(object);
+				break;
+			case 3:
+				render->SetTexture("powerup.png",4,32,32);
+				m_PowerupsArr.push_back(object);
 				break;
 			case 4:
 				render->SetTexture("cherry.png");

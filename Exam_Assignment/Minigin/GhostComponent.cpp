@@ -4,7 +4,7 @@
 #include "InputManager.h"
 
 
-GhostComponent::GhostComponent()
+GhostComponent::GhostComponent(RenderComponent * renderComp, std::string texturePath): m_RenderComp(renderComp), m_TexturePath(texturePath)
 {
 	m_Direction = static_cast<Direction>(rand()%4);
 	m_TargetDirection = static_cast<Direction>(rand() % 4);
@@ -18,7 +18,26 @@ GhostComponent::~GhostComponent()
 
 void GhostComponent::Update(float deltaTime)
 {
-	if (m_RespawnTimer>0)
+	//players
+	PlayerComponent* player1 = dae::InputManager::GetInstance().GetPlayer1();
+	PlayerComponent* player2 = dae::InputManager::GetInstance().GetPlayer2();
+	//check if scared
+	if (player1 != nullptr && player1->IsPoweredUp() || player2 != nullptr && player2->IsPoweredUp())
+		m_Scared = true;
+	else
+		m_Scared = false;
+	//update texture if needed
+	if (m_TextureScared != m_Scared)
+	{
+		if (m_Scared)
+			m_RenderComp->SetTexture("ghostScared.png", 2, 32, 36);
+		else
+			m_RenderComp->SetTexture(m_TexturePath, 2, 32, 36);
+
+		m_TextureScared = m_Scared;
+	}
+
+	if (m_RespawnTimer > 0)
 	{
 		m_RespawnTimer -= deltaTime;
 		return;
@@ -38,14 +57,13 @@ void GhostComponent::Update(float deltaTime)
 
 
 	//check player collision
-	PlayerComponent* player1 = dae::InputManager::GetInstance().GetPlayer1();
-	PlayerComponent* player2 = dae::InputManager::GetInstance().GetPlayer2();
-
-	if (player1 != nullptr && player1->GhostCollision(GetParent()->GetPosition()))
-		Respawn();
-	if (player2 != nullptr && player2->GhostCollision(GetParent()->GetPosition()))
-		Respawn();
-
+	if (m_RespawnTimer<=0)
+	{
+		if (player1 != nullptr && player1->GhostCollision(GetParent()->GetPosition()))
+			Respawn();
+		if (player2 != nullptr && player2->GhostCollision(GetParent()->GetPosition()))
+			Respawn();
+	}
 }
 
 void GhostComponent::UpdateMovement(float deltaTime)
