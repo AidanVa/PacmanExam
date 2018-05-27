@@ -71,7 +71,7 @@ namespace dae
 		float m_TileSize = 18;
 
 
-		int m_LevelIndex = 1;
+		int m_LevelIndex = 2;
 		int m_LevelCount = 3;
 
 		//debug

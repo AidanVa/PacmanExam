@@ -355,7 +355,7 @@ void dae::Scene::EndLevel(bool win)
 {
 	m_IsGameRunning = false;
 	ClearLevel();
-
+	//end message
 	auto scoreObject = std::make_shared<dae::GameObject>();
 	scoreObject->SetPosition(120, 0150);
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 72);
@@ -364,9 +364,14 @@ void dae::Scene::EndLevel(bool win)
 	else
 		scoreObject->AddComponent(new TextComponent("Game Over.", font));
 
-
 	dae::SceneManager::GetInstance().GetScene()->Add(scoreObject);
 
+	//restart message
+	auto startText = std::make_shared<dae::GameObject>();
+	startText->SetPosition(230, 230);
+	auto font2 = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
+	startText->AddComponent(new TextComponent("Press SPACE to restart.", font2));
+	dae::SceneManager::GetInstance().GetScene()->Add(startText);
 }
 
 void dae::Scene::StartLevel()
